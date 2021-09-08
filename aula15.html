@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs do jeito ninja</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div id="app">
+      <div class="container">
+        <input-form></input-form>
+
+        <br>
+
+        <my-list></my-list>
+      </div>
+    </div>
+
+      <template id="form">
+        <div class="card">
+          <div class="card-block">
+            <div class="form-group">
+              <label for="">Título</label>
+              <input v-model="title" type="text" class="form-control">
+            </div>
+            <button @click.stop.prevent="submit()" class="btn btn-primary">Enviar</button>
+          </div>
+        </div>
+      </template>
+
+      <br/>
+
+      <template id="list">
+        <ul class="list-group">
+          <li v-for="item in list" class="list-group-item">{{ item.titulo }}</li>
+        </ul>
+      </template>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+
+      Vue.component('input-form', {
+        template: '#form ',
+        data () {
+          return {
+            title: '',
+          }
+        },
+        methods: {
+          submit () {
+            this.$eventHub.$emit('submit', this.title)
+            console.log('oi')
+          }
+        }
+      })
+
+      Vue.component('my-list', {
+        template: '#list',
+        created () {
+          var vm = this
+          // eventBus.$on('submit', function (titulo) {
+          this.$eventHub.$on('submit', function (titulo) { // e aí usa this.$eventHub em vez de eventBus
+            if (titulo) {
+              vm.list.push({ titulo: titulo })
+            }
+          })
+        },
+        data () {
+          return {
+            list: [
+              { titulo: 'Greta Garbo and Monroe' },
+            ]
+          }
+        }
+      })
+
+      // var eventBus = new Vue()
+      Vue.prototype.$eventHub = new Vue() // em vez do eventBus, tem esse protótiopo já no vue
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          titulo: 'Vuejs do jeito ninja'
+        }
+      })
+      // EVENT BUS
+      // tem dois components que não são parentes
+      // e quero passar dados entre eles
+      // em um dos componentes eu faço a emissão de um evento para o eventHub ou eventBus
+      // e no componente em que quero receber os dados, eu faço um listening com o $on no eventHub
+
+    </script>
+  </body>
+</html>

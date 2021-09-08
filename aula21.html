@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs do jeito ninja</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div id="app" class="container">
+      <h1>{{ title }}</h1>
+      <select v-model="movie" name="" id="">
+        <option value="rocky-horror">The Rocky Horror picture show</option>
+        <option value="mean-girls">Mean girls</option>
+      </select>
+
+      <component :is="movie"></component>
+    </div>
+
+    <template id="rockyHorror">
+      <div>
+        <h6>The Rocky Horror picture show</h6>
+        <ul>
+          <li v-for="(character, index) in characters" :key="index">{{ character.name }}</li>
+        </ul>
+      </div>
+    </template>
+
+    <template id="meanGirls">
+      <div>
+        <h6>Mean girls</h6>
+        <ul>
+          <li v-for="(character, index) in characters" :key="character.name">{{ character.name }}</li>
+        </ul>
+      </div>
+    </template>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+
+      Vue.component('rocky-horror', {
+        template: '#rockyHorror',
+        props: {
+        },
+
+        data () {
+          return {
+            characters: [
+              { name: 'Janet!' },
+              { name: 'Dr. Scott!' },
+              { name: 'Janet!' },
+              { name: 'Brad!' },
+              { name: 'Rocky!' }
+            ]
+          }
+        }
+      })
+
+      Vue.component('mean-girls', {
+        template: '#meanGirls',
+        props: {
+        },
+
+        data () {
+          return {
+            characters: [
+              { name: 'Regina' },
+              { name: 'Cady' },
+              { name: 'Gretchen' },
+              { name: 'Karen' }
+            ]
+          }
+        }
+      })
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          title: 'Vuejs do jeito ninja',
+          movie: ''
+        }
+      })
+
+    </script>
+  </body>
+</html>

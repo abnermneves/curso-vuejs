@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs do jeito ninja</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div id="app" class="container">
+      <h1>{{ title }}</h1>
+      <button @click.stop.prevent="getUsers()" class="btn btn-primary">Get users</button>
+
+      <div v-if="response.status == 'error'" class="alert alert-danger">{{ response.msg }}</div>
+
+      <div v-if="loader.users">Carregando usuários</div>
+
+      <ul>
+        <li v-for="user in users">{{ user.name }}</li>
+
+      </ul>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+      var mixin = {
+        methods: {
+          getUsers () {
+            this.loader.users = true
+            var url = 'http://jsonplaceholder.typicode.com/users'
+            var vm = this
+            axios.get(url).then(response => {
+              console.log(response)
+              vm.users = response.data // mas esse this é do escopo da função
+              vm.loader.users = false
+            })
+
+            this.$http.get(url)
+            .then(
+              function (response) {
+                console.log(response.body)
+                this.users = response.body
+              },
+              function (error) {
+                this.response.status = 'error'
+                console.log(error)
+              })
+            .finally(function () {
+              // é executado depois do then e do catch
+              this.loader.users = false
+            })
+          }
+        }
+      }
+
+      var app = new Vue({
+        el: '#app',
+
+        data: {
+          title: 'Vuejs do jeito ninja',
+          users: [],
+          loader: {
+            users: false
+          },
+          response: {
+            msg: 'Erro ao conectar',
+            status: ''
+          }
+        },
+        mixins: [mixin],
+
+        methods: {
+        }
+      })
+
+      // MIXINS
+      // mixin é uma variável que segue a mesma estrutura de um componente vue
+      // com os mesmos métodos e hooks
+      // é só declarar e adicionar no componente que ele vai casar os métodos e hooks
+      // do mixing com os métodos e hooks correspondentes do componente
+      // se tiver métodos com o mesmo nome na mixing e no componente, os do componente prevalecem
+      // mas, se for utilizar hooks, primeiro os da mixin são executados e, depois, do componente. ambos são executados
+    </script>
+  </body>
+</html>

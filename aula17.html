@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs do jeito ninja</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div id="app" class="container">
+      <h1>{{ title }}</h1>
+      <button @click.stop.prevent="getUsers()" class="btn btn-primary">Submit</button>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+
+      Vue.component('', {
+        template: '',
+        props: {
+        },
+
+        data () {
+          return {
+          }
+        }
+      })
+
+      var mixin = {
+        created () {
+          alert('criou mixin')
+        },
+
+        methods: {
+          getUsers () {
+            alert('oi')
+          }
+        }
+      }
+
+      var app = new Vue({
+        el: '#app',
+        created () {
+          alert('criou vue')
+        },
+
+        data: {
+          title: 'Vuejs do jeito ninja'
+        },
+
+        mixins: [mixin],
+
+        methods: {
+        }
+      })
+
+      // MIXINS
+      // mixin é uma variável que segue a mesma estrutura de um componente vue
+      // com os mesmos métodos e hooks
+      // é só declarar e adicionar no componente que ele vai casar os métodos e hooks
+      // do mixing com os métodos e hooks correspondentes do componente
+      // se tiver métodos com o mesmo nome na mixing e no componente, os do componente prevalecem
+      // mas, se for utilizar hooks, primeiro os da mixin são executados e, depois, do componente. ambos são executados
+    </script>
+  </body>
+</html>

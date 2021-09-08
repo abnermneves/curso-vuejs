@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs do jeito ninja</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div id="app" class="container">
+      <h1>{{ title }}</h1>
+    </div>
+
+<!-- <ul>
+  <li v-for="produto in produtos" :key="produto.name">{{ produto.name }}</li>
+</ul> -->
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+
+      Vue.component('', {
+        template: '',
+        props: {
+        },
+
+        data () {
+          return {
+          }
+        }
+      })
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          title: 'Vuejs do jeito ninja'
+        }
+      })
+
+      // :KEY
+      // key define um identificador para cada elemento em um v-for, por exemplo (apenas v-for?)
+      // não é necessário defini-lo, porque o vuejs dá seu jeito de identificar cada elemento
+      // mas é bom defini-lo, porque aí o vuejs não precisa encontrar identificadores, ele já sabe qual identificador usar
+      // então isso torna a aplicação um pouco mais rápida
+
+      // REF
+      // define um identificador para um elemento
+      // para capturar um elemento por ref, usa this.$refs
+      // this.$refs é uma lista com todos os elementos com ref
+      // então, por exemplo, se tem um <p ref="paragrafo">
+      // ele pode ser capturado com this.$refs.paragrafo
+
+      // SLOT
+      // como visto na aula 16, slot define em qual slot o elemento será encaixado
+      // basta definir os nomes de cada slot criado
+      // e no elemento a encaixar, colocar slot="name-do-slot"
+
+      // IS
+      // ao definir um componente anônimo <component is="">, o vuejs transforma o componente naquilo que estiver dentro de is
+      // então, is só pode receber o nome de um componente existente
+      // também dá pra usar em conjunto com o v-bind e deixar uma variável no is
+      // por exemplo, <component :is="user"> e no data user='admin' e existe um componente <admin>
+      // então, o componente anônimo vai ser substituído por <admin>
+
+    </script>
+  </body>
+</html>

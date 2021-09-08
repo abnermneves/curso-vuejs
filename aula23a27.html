@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs do jeito ninja</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div id="app" class="container">
+      <h1>{{ title }}</h1>
+      <router-link :to="{ name: 'rockyhorror' }">The Rocky Horror picture show</router-link><br>
+      <router-link :to="{ name: 'meangirls' }">Mean girls</router-link><br>
+      <router-link to="/suspiria">Suspiria</router-link><br>
+
+      <router-view></router-view>
+    </div>
+
+    <template id="rockyHorror">
+      <div>
+        <div class="row">
+          <div v-if="sidebar" class="col">
+            Sidebar
+          </div>
+
+          <div class="col">
+            <h5>The Rocky Horror picture show</h5>
+            <ul>
+              <li v-for="(character, index) in characters" :key="index"><router-link :to="{ name: 'rockyHorrorContent', params: { name: character.slug } }">{{ character.name }}</router-link></li>
+            </ul>
+          </div>
+
+          <div class="col">
+            <router-view></router-view>
+          </div>
+        </div>
+
+      </div>
+    </template>
+
+    <template id="meanGirls">
+      <div>
+        <div class="row">
+
+          <div class="col">
+            <h5>Mean girls</h5>
+            <ul>
+              <li v-for="(character, index) in characters" :key="index"><router-link :to="{ name: 'meanGirlsContent', params: { name: character.slug } }">{{ character.name }}</router-link></li>
+            </ul>
+          </div>
+
+          <div class="col">
+            <router-view></router-view>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="rockyHorrorContent">
+        <div>
+            <h6>Conteúdo Rocky Horror</h6>
+            {{ $route.params.name }}
+        </div>
+    </template>
+
+    <template id="meanGirlsContent">
+      <div>
+        <h6>Conteúdo Mean girls</h6>
+        {{ $route.params.name }}
+      </div>
+    </template>
+
+    <template id="error404">
+      <p class="alert alert-danger">Error 404: not found</p>
+    </template>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script>
+
+      var RockyHorror = Vue.component('rocky-horror', {
+        template: '#rockyHorror',
+        props: {
+          sidebar: Boolean,
+          required: true
+        },
+
+        created () {
+          console.log(this.sidebar)
+        },
+
+        data () {
+          return {
+            characters: [
+              { name: 'Janet!', slug: 'janet' },
+              { name: 'Dr. Scott!', slug: 'scott' },
+              { name: 'Janet!', slug: 'janet' },
+              { name: 'Brad!', slug: 'brad' },
+              { name: 'Rocky!', slug: 'rocky' }
+            ]
+          }
+        }
+      })
+
+      var MeanGirls = Vue.component('mean-girls', {
+        template: '#meanGirls',
+        props: {
+        },
+
+        data () {
+          return {
+            characters: [
+              { name: 'Regina', slug: 'regina' },
+              { name: 'Cady', slug: 'cady' },
+              { name: 'Gretchen', slug: 'gretchen' },
+              { name: 'Karen', slug: 'karen' }
+            ]
+          }
+        }
+      })
+
+      var RockyHorrorContent = Vue.component('rocky-horror-content', {
+        template: '#rockyHorrorContent'
+      })
+
+      var MeanGirlsContent = Vue.component('mean-girls-content', {
+        template: '#meanGirlsContent'
+      })
+
+      var error404 = Vue.component('error404', {
+        template: '#error404'
+      })
+
+      var router = new VueRouter({
+        // mode: 'history', // só funciona com um servidor
+        routes: [
+          { path: '/', name: 'home' },
+          { path: '/rocky-horror', name: 'rockyhorror', component: RockyHorror,
+            props: { sidebar: true }, // para passar propriedades, isto é, parâmetros que não vão ser exibidos na URL
+            children: [{ path: ':name', name: 'rockyHorrorContent', component: RockyHorrorContent }]
+          },
+          { path: '/mean-girls', name: 'meangirls', component: MeanGirls,
+            children: [{ path: ':name', name: 'meanGirlsContent', component: MeanGirlsContent}] },
+          { path: '*', name: 'error404', component: error404 }
+        ]
+      })
+
+      var app = new Vue({
+        el: '#app',
+        router,
+
+        created () {
+          // redireciona direto para /rockyhorror/rocky
+          // tem também o redirect, que define como um parâmetro na rota mesmo
+          // this.$router.push({ name: 'rockyHorrorContent', params: { name: 'rocky' } })
+        },
+
+        data: {
+          title: 'Vuejs do jeito ninja',
+          movie: ''
+        }
+      })
+
+      // ROUTER VIEW
+      // é onde são carregados os componentes da rota
+
+      // ROUTER LINK
+      // é tipo um a href, mas que redireciona para o servidor, não trata como um link absoluto
+
+    </script>
+  </body>
+</html>

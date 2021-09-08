@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs do jeito ninja</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div id="app">
+      <div class="container">
+        <card>
+          <!-- qualquer coisa que eu colocar aqui, o Vuejs coloca no slot definido dentro do componente-->
+          <div>Trying to blow bubbles</div>
+          <h4 slot="title" class="card-title">Solar power</h4>
+          <template slot="text">
+            <p class="card-text">You need someone to take your pain for you, well, that's not me</p>
+            <p class="card-text">Let's hope the sun will show us the path</p>
+          </template>
+          <a slot="action" href="#" class="btn btn-primary">Blink three times</a>
+        </card>
+
+        <card>
+          <!-- qualquer coisa que eu colocar aqui, o Vuejs coloca no slot definido dentro do componente-->
+          <div>Trying to blow bubbles</div>
+          <h4 slot="title" class="card-title">Solar power</h4>
+          <template slot="text">
+            <p class="card-text">You need someone to take your pain for you, well, that's not me</p>
+            <p class="card-text">Let's hope the sun will show us the path</p>
+          </template>
+          <a slot="action" href="#" class="btn btn-primary">Blink three times</a>
+        </card>
+
+      </div>
+    </div>
+
+    <template id="card">
+      <div class="card">
+        <img src="https://via.placeholder.com/350x150" alt="" class="card-img-top">
+        <div class="card-block">
+          <slot name="title"></slot>
+          <slot name="text"></slot>
+          <slot name="action"></slot>
+        </div>
+      </div>
+    </template>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+
+      Vue.component('card', {
+        template: '#card',
+        props: {
+            title: {
+                type: String,
+                default: 'Solar power'
+            }
+        },
+
+        data () {
+          return {
+            list: [
+              { titulo: 'Greta Garbo and Monroe' },
+            ]
+          }
+        }
+      })
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          titulo: 'Vuejs do jeito ninja'
+        }
+      })
+
+      // SLOTS
+      // permite colocar um conteúdo dentro do seu componente
+
+    </script>
+  </body>
+</html>
